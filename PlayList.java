@@ -75,6 +75,7 @@ class PlayList
         if ( size != 0)
         {
             tracks[last] = null;
+            size--;
         }
     }
     
@@ -113,59 +114,44 @@ class PlayList
      *  If i is negative or greater than the size of this list, or if the list
      *  is full, does nothing and returns false. Otherwise, inserts the track and
      *  returns true. */
+     /** Inserts the given track in index i of this list. For example, if the list is
+     *  (t5, t3, t1), then just after add(1,t4) the list becomes (t5, t4, t3, t1).
+     *  If the list is the empty list (), then just after add(0,t3) it becomes (t3).
+     *  If i is negative or greater than the size of this list, or if the list
+     *  is full, does nothing and returns false. Otherwise, inserts the track and
+     *  returns true. */
     public boolean add(int i, Track track) 
     {
-        //// replace the following statement with your code
-        if ( i < 0 || i > size || size == maxSize)
+        if (i < 0 || i > size || size == maxSize) 
         {
             return false;
         }
-        if ( size == 0)
-        {
-            tracks[i] = track;
-            return true;
-        }
         size++;
-        for ( int j = size - 1; size >= i; j++)
+        for (int j = size - 1; j > i; j--) 
         {
-            if ( j != i )
-            {
-                tracks[j] = tracks[j-1];
-            }
-            else
-            {
-                tracks[j] = track;
-
-            }
+            tracks[j] = tracks[j - 1];
         }
+        tracks[i] = track;
         return true;
     }
+    
      
     /** Removes the track in the given index from this list.
      *  If the list is empty, or the given index is negative or too big for this list, 
      *  does nothing and returns -1. */
     public int remove(int i) 
     {
-        //// replace this comment with your code
-        if ( size == 0 || i < 0 || i > size )
-        {
+        if (size == 0 || i < 0 || i >= size) {
             return -1;
         }
-        for ( int j = i; j < size; j++)
-        {
-            if ( j == size - 1)
-            {
-                tracks[j] = null;
-                size--;
-                return 0;
-            }
-            else
-            {
-                tracks[j+1] = tracks[j];
-            }
+        for (int j = i; j < size - 1; j++) {
+            tracks[j] = tracks[j + 1];
         }
+        tracks[size - 1] = null;
+        size--;
+        return 0;
     }
-
+    
     /** Removes the first track that has the given title from this list.
      *  If such a track is not found, or the list is empty, or the given index
      *  is negative or too big for this list, does nothing. */
